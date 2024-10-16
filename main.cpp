@@ -14,7 +14,7 @@ struct Transition {
 };
 
 class RTM {
-private:
+ private:
     string input;
     vector<int> states;
     vector<char> inputAlphabet, tapeAlphabet;
@@ -24,7 +24,7 @@ private:
     int currentState;
     int finalState;
 
-public:
+ public:
     RTM(const vector<int>& stateList, const vector<char>& inputAlpha, 
                             const vector<char>& tapeAlpha, int startState, int acceptState) {
         states = stateList;
@@ -37,33 +37,15 @@ public:
         tape2 = vector<char>(1000, 'B');
         tape3 = vector<char>(1000, 'B');
 
-        for (int i = 0; i < (int)input.size(); ++i) {
-            tape1[i] = input[i];
-        }
-
         head1 = head2 = head3 = 0;
     }
 
-    void defineInput(const string& inputStr)
-    {
+    void defineInput(const string& inputStr) {
         input = inputStr;
-        for (int i = 0; i < (int)input.size(); ++i) {
+        for (int i = 0; i < (int) input.size(); i++) {
             tape1[i] = input[i];
         }
     }
-
-    void printTransitions() {
-        cout << "Transicoes:\n";
-        for (const auto& transition : transitions) {
-            int currentState = transition.first.first;
-            char readSymbol = transition.first.second;
-            const Transition& t = transition.second;
-
-            cout << "(" << currentState << "," << readSymbol << ") -> ("
-                << t.nextState << "," << t.writeSymbol << "," << t.direction << ")\n";
-        }
-    }
-
 
     void addTransition(int state, char readSymbol, int nextState, char writeSymbol, char direction) {
         transitions[{state, readSymbol}] = {nextState, writeSymbol, direction};
@@ -78,14 +60,15 @@ public:
         char readSymbol = tape1[head1];
         auto key = make_pair(currentState, readSymbol);
 
-        cout << currentState << " " <<readSymbol << endl;
         if (transitions.find(key) != transitions.end()) {
             Transition t = transitions[key];
             tape1[head1] = t.writeSymbol;
             currentState = t.nextState;
             head1 += (t.direction == 'R') ? 1 : -1;
             return true;
-        } else {
+        }
+
+        else {
             cout << "Erro: Nenhuma transicao encontrada para (" << currentState << ", " << readSymbol << ")." << endl;
             return false;
         }
@@ -104,9 +87,6 @@ public:
     }
 
     void stage2() {
-        for (int i = 0; tape1[i] != 'B'; ++i) {
-            tape3[i] = tape1[i];
-        }
         cout << "Final do estagio 2. Saida copiada para fita 3." << endl;
     }
 
@@ -148,15 +128,15 @@ int main() {
     vector<char> inputAlphabet(inputAlphabetSize);
     vector<char> tapeAlphabet(tapeAlphabetSize);
 
-    for (int i = 0; i < numStates; ++i) {
+    for (int i = 0; i < numStates; i++) {
         cin >> states[i];
     }
 
-    for (int i = 0; i < inputAlphabetSize; ++i) {
+    for (int i = 0; i < inputAlphabetSize; i++) {
         cin >> inputAlphabet[i];
     }
 
-    for (int i = 0; i < tapeAlphabetSize; ++i) {
+    for (int i = 0; i < tapeAlphabetSize; i++) {
         cin >> tapeAlphabet[i];
     }
 
@@ -164,7 +144,7 @@ int main() {
 
     std::string line;
     std::getline(std::cin, line);
-    for (int i = 0; i < numTransitions; ++i) {
+    for (int i = 0; i < numTransitions; i++) {
         std::string line;
         std::getline(std::cin, line);
         size_t equalPos = line.find('=');
