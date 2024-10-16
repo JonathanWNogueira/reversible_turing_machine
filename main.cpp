@@ -5,16 +5,6 @@
 #include <sstream>
 #include <algorithm>
 
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-///  g++ main.cpp -o main && ./main < input.txt
-
 using namespace std;
 
 struct Transition {
