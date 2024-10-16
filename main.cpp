@@ -35,7 +35,7 @@ private:
     int finalState;
 
 public:
-    RTM(int numStates, const vector<int>& stateList, const vector<char>& inputAlpha, 
+    RTM(const vector<int>& stateList, const vector<char>& inputAlpha, 
                             const vector<char>& tapeAlpha, int startState, int acceptState) {
         states = stateList;
         inputAlphabet = inputAlpha;
@@ -47,7 +47,7 @@ public:
         tape2 = vector<char>(1000, 'B');
         tape3 = vector<char>(1000, 'B');
 
-        for (int i = 0; i < input.size(); ++i) {
+        for (int i = 0; i < (int)input.size(); ++i) {
             tape1[i] = input[i];
         }
 
@@ -57,13 +57,13 @@ public:
     void defineInput(const string& inputStr)
     {
         input = inputStr;
-        for (int i = 0; i < input.size(); ++i) {
+        for (int i = 0; i < (int)input.size(); ++i) {
             tape1[i] = input[i];
         }
     }
 
     void printTransitions() {
-        cout << "Transições:\n";
+        cout << "Transicoes:\n";
         for (const auto& transition : transitions) {
             int currentState = transition.first.first;
             char readSymbol = transition.first.second;
@@ -80,8 +80,8 @@ public:
     }
 
     bool applyTransition() {
-        if (head1 < 0 || head1 >= tape1.size()) {
-            cout << "Erro: Cabeça fora dos limites da fita!" << endl;
+        if (head1 < 0 || head1 >= (int) tape1.size()) {
+            cout << "Erro: Cabecote fora dos limites da fita!" << endl;
             return false;
         }
         
@@ -96,7 +96,7 @@ public:
             head1 += (t.direction == 'R') ? 1 : -1;
             return true;
         } else {
-            cout << "Erro: Nenhuma transição encontrada para (" << currentState << ", " << readSymbol << ")." << endl;
+            cout << "Erro: Nenhuma transicao encontrada para (" << currentState << ", " << readSymbol << ")." << endl;
             return false;
         }
     }
@@ -104,25 +104,24 @@ public:
 
     void stage1() {
         while (currentState != finalState) {
-            cout << finalState << endl;
-            cout << "Estado atual: " << currentState << ", Símbolo lido: " << tape1[head1] << endl;
+            cout << "Estado atual: " << currentState << ", Simbolo lido: " << tape1[head1] << endl;
             if (!applyTransition()) {
-                cout << "Erro: Nenhuma transição encontrada." << endl;
+                cout << "Erro: Nenhuma transicao encontrada." << endl;
                 return;
             }
         }
-        cout << "Final do estágio 1. Estado final: " << currentState << endl;
+        cout << "Final do estagio 1. Estado final: " << currentState << endl;
     }
 
     void stage2() {
         for (int i = 0; tape1[i] != 'B'; ++i) {
             tape3[i] = tape1[i];
         }
-        cout << "Final do estágio 2. Saída copiada para fita 3." << endl;
+        cout << "Final do estagio 2. Saida copiada para fita 3." << endl;
     }
 
     void stage3() {
-        cout << "Estágio 3: Inversão das transições." << endl;
+        cout << "Estagio 3: Inversao das transicoes." << endl;
     }
 
     void execute() {
@@ -171,14 +170,13 @@ int main() {
         cin >> tapeAlphabet[i];
     }
 
-    RTM tm(numStates, states, inputAlphabet, tapeAlphabet, states[0], states[numStates-1]);
+    RTM tm(states, inputAlphabet, tapeAlphabet, states[0], states[numStates-1]);
 
     std::string line;
     std::getline(std::cin, line);
     for (int i = 0; i < numTransitions; ++i) {
         std::string line;
         std::getline(std::cin, line);
-        // cout << line << endl;
         size_t equalPos = line.find('=');
         if (equalPos == std::string::npos) continue; 
 
