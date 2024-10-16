@@ -25,6 +25,7 @@ struct Transition {
 
 class RTM {
 private:
+    string input;
     vector<int> states;
     vector<char> inputAlphabet, tapeAlphabet;
     map<pair<int, char>, Transition> transitions;
@@ -34,13 +35,11 @@ private:
     int finalState;
 
 public:
-    string input;
     RTM(int numStates, const vector<int>& stateList, const vector<char>& inputAlpha, 
-                            const vector<char>& tapeAlpha, int startState, int acceptState, const string& inputStr) {
+                            const vector<char>& tapeAlpha, int startState, int acceptState) {
         states = stateList;
         inputAlphabet = inputAlpha;
         tapeAlphabet = tapeAlpha;
-        input = inputStr;
         currentState = startState;
         finalState = acceptState;
 
@@ -53,6 +52,14 @@ public:
         }
 
         head1 = head2 = head3 = 0;
+    }
+
+    void defineInput(const string& inputStr)
+    {
+        input = inputStr;
+        for (int i = 0; i < input.size(); ++i) {
+            tape1[i] = input[i];
+        }
     }
 
     void printTransitions() {
@@ -97,6 +104,7 @@ public:
 
     void stage1() {
         while (currentState != finalState) {
+            cout << finalState << endl;
             cout << "Estado atual: " << currentState << ", Símbolo lido: " << tape1[head1] << endl;
             if (!applyTransition()) {
                 cout << "Erro: Nenhuma transição encontrada." << endl;
@@ -163,14 +171,14 @@ int main() {
         cin >> tapeAlphabet[i];
     }
 
-    RTM tm(numStates, states, inputAlphabet, tapeAlphabet, states[0], states[numStates-1], "");
+    RTM tm(numStates, states, inputAlphabet, tapeAlphabet, states[0], states[numStates-1]);
 
     std::string line;
     std::getline(std::cin, line);
     for (int i = 0; i < numTransitions; ++i) {
         std::string line;
         std::getline(std::cin, line);
-        cout << line << endl;
+        // cout << line << endl;
         size_t equalPos = line.find('=');
         if (equalPos == std::string::npos) continue; 
 
@@ -191,7 +199,7 @@ int main() {
 
     string input;
     cin >> input;
-    tm.input = input;
+    tm.defineInput(input);
 
     tm.execute();
 
