@@ -68,10 +68,10 @@ pair<Quadruple, Quadruple> revertsQuadruple(pair<Quadruple, Quadruple> quads)
     };
 
     // Para garantir reversão correta, trocamos 'L' por 'R' e vice-versa:
-    if (reversedSecond.direction == 'L') {
-        reversedSecond.direction = 'R';
-    } else if (reversedSecond.direction == 'R') {
-        reversedSecond.direction = 'L';
+    if (reversedFirst.direction == 'L') {
+        reversedFirst.direction = 'R';
+    } else if (reversedFirst.direction == 'R') {
+        reversedFirst.direction = 'L';
     }
 
     return make_pair(reversedFirst, reversedSecond);
@@ -152,7 +152,7 @@ class RTM {
             return false;
         }
         pair<int,char> keyMove = getActualKey();
-        printf("KEY : %c, %c, HEAD: %d\n",'0' + keyMove.first, keyMove.second, historyTape.headPosition);
+        // printf("KEY : %c, %c, HEAD: %d\n",'0' + keyMove.first, keyMove.second, historyTape.headPosition);
         historyTape.content[historyTape.headPosition] = '0' + keyMove.first;
         historyTape.headPosition++;
         historyTape.content[historyTape.headPosition] = keyMove.second;
@@ -182,7 +182,22 @@ class RTM {
 
     bool applyReversedTransition(pair<Quadruple, Quadruple> transition)
     {
+        Quadruple first = transition.first;
+        Quadruple second = transition.second;
+
         printQuadruple(transition);
+
+        // Step 1: Revert the second quadruple first (move head back)
+        if (first.direction == 'L') {
+            inputTape.headPosition--;
+        } else if (first.direction == 'R') {
+            inputTape.headPosition++;
+        }
+
+        // Step 2: Revert the first quadruple (write the original symbol)
+        inputTape.content[inputTape.headPosition] = second.symbol;
+        
+        return true;
     }
 
     void stage1() {
@@ -201,8 +216,7 @@ class RTM {
         for (int i = 0; i < (int)inputTape.content.size(); i++) {
             outputTape.content[i] = inputTape.content[i];
         }
-        inputTape.headPosition = 0;
-        outputTape.headPosition = 0;
+
         cout << "Final do estagio 2. Saida copiada para fita 3." << endl;
     }
     
