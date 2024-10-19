@@ -1,2 +1,2 @@
 **Reversible Turing Machine**
-- Compile: ./c.bat
+- Compile: compile.bat
