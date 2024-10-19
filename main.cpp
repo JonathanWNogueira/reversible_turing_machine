@@ -151,6 +151,11 @@ class RTM {
             cout << "Erro: Cabecote fora dos limites da fita! === " << inputTape.headPosition << endl;
             return false;
         }
+        else if (transition.first.direction == 'N')
+        {
+            cout << "Erro: transicao nao existente" << endl;
+            return false;
+        }
         pair<int,char> keyMove = getActualKey();
         // printf("KEY : %c, %c, HEAD: %d\n",'0' + keyMove.first, keyMove.second, historyTape.headPosition);
         historyTape.content[historyTape.headPosition] = '0' + keyMove.first;
@@ -163,18 +168,15 @@ class RTM {
 
         printQuadruple(transition);
 
-        // Step 1: Apply first quadruple (write symbol, no move yet)
         inputTape.content[inputTape.headPosition] = first.direction;
 
-
-        // Step 2: Apply second quadruple (move head and update state)
         if (second.direction == 'L') {
             inputTape.headPosition--;
         } else if (second.direction == 'R') {
             inputTape.headPosition++;
         }
 
-        // Step 3: Update the current state
+
         currentState = second.nextState;
 
         return true;
@@ -228,7 +230,7 @@ class RTM {
             char keySymbol = historyTape.content[i+1];
             pair<int,char> key = make_pair(keyState,keySymbol);
 
-            cout << historyTape.content[i] << " " << historyTape.content[i+1] << endl;
+            // cout << historyTape.content[i] << " " << historyTape.content[i+1] << endl;
 
             // Revertendo as transições salvas no histórico (use o método `revertsQuadruple`)
             pair<Quadruple, Quadruple> reversedTransition = revertsQuadruple(breaksQuintupleApart(key, getTransition(key)));
@@ -240,6 +242,14 @@ class RTM {
 
     void execute() {
         stage1();
+        cout << "Fita 2: ";
+        for (char c : historyTape.content) {
+            if (c != 'B') 
+            {
+                printf("%c", c) << c;
+            }
+        }
+        cout << endl;
         stage2();
         stage3();
     }
