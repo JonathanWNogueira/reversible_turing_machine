@@ -115,6 +115,9 @@ bool RTM::applyReversedTransition(pair<Quadruple, Quadruple> transition) {
 
     inputTape.content[inputTape.headPosition] = second.symbol;
 
+    cout << ", Simbolo escrito: " << inputTape.content[inputTape.headPosition] << endl;
+
+
     return true;
 }
 
@@ -146,7 +149,9 @@ void RTM::stage3() {
         pair<int, char> key = make_pair(keyState, keySymbol);
         
         pair<Quadruple, Quadruple> reversedTransition = revertsQuadruple(breaksQuintupleApart(key, getTransition(key)));
+        cout << endl << "Estado atual: " << currentState << ", Proximo Estado: "<< keyState << endl << "Simbolo lido: " << inputTape.content[inputTape.headPosition];
         applyReversedTransition(reversedTransition);
+        currentState = keyState;
         historyTape.content[i] = 'B';
         historyTape.content[i + 1] = 'B';
     }
